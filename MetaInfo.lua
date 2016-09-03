@@ -90,7 +90,7 @@ function MetaInfo.visitor(pattIdent, func, ntProd, patt, ...)
   else
     local lRet, lParams = Util.any(patt.params, fRec)
     if lRet then
-      return lRet, MetaInfo.new(patt.index, patt.opIdent, patt.opPatt, unpack(lParams))
+      return lRet, MetaInfo.new(patt.index, patt.opIdent, patt.opPatt, table.unpack(lParams))
     else
       return false, patt
     end
