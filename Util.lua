@@ -2,33 +2,7 @@ local SHA = require("sha2")
 
 local Util = {}
 
-function Util.copy(object,maxIdx)
-  if type(object) ~= "table" then
-    return object
-	else
-	  local t = {}
-	  local mt = getmetatable(object)
-	  local mp,mn = nil, nil
-	  if mt then
-	    mp = mt.__pairs
-	    mn = mt.__next
-	    mt.__pairs = nil
-	    mt.__next = nil
-	  end
-	  
-	  for _i, v in pairs(object) do
-	    if not maxIdx or
-	       _i <= maxIdx then
-		    t[Util.copy(_i)] = Util.copy(v)
-		  end
-		end
-		if mt then
-		  mt.__pairs = mp
-		  mt.__next = mn
-		end
-		return setmetatable(t, mt)
-	end
-end
+-- [[==Table related functions ==]]
 
 function Util.emptyTable(t)
   if next(t) then return false end
@@ -43,16 +17,6 @@ function Util.sizeTable(t, index)
     i = i+1
   end
   return i
-end
-
-function Util.incGen(initSeed)
-  local seed = initSeed or 0
-  return function (ro)
-    if ro then return seed end
-    local r = seed
-    seed = seed+1
-    return r
-  end
 end
 
 function Util.map(tab, func, idxSort)
@@ -122,6 +86,94 @@ function Util.getOrderValue(tab)
   end
   
   return ret
+end
+
+function Util.tabInvert(tab)
+  if (not #tab) or #tab == 0 then return nil end
+  
+  local r = {}
+  for i=#tab,1,-1 do
+    r[#r+1] = tab[i]
+  end
+  return r
+end
+
+function Util.tableGen(num,pre,pos)
+  local ret = {}
+  local e
+  --print(num)
+  for i=1,num do
+    if not pre and not pos then e = i
+    elseif not pos then e = string.format("%s%s", pre, i) --pre
+    elseif not pre then e = string.format("%s%s", i, pos) --pos
+    else e = string.format("%s%s%s", pre, i, pos) end
+    ret[#ret+1] = e 
+  end
+  
+  return ret
+end
+
+function Util.tableFilter(tab,fCond, shortStop)
+  if not (tab and fCond) then error("Util.tableFilter: Invalid parameters!"); end
+  
+  shortStop = Util.defVal(shortStop, true)
+  local ret = {}
+  local fI = Util.incGen(1)
+  local add,nK,nV
+  
+  for k,v in pairs(tab) do
+    add, nK, nV = fCond(k,v, fI())
+    if shortStop and (not add) then return ret
+    else
+      if add then
+        if not nK then ret[k] = v
+        else ret[nK] = nV end
+      end
+    end
+  end
+  
+  return ret
+end
+
+-- [[== End of table related functions ==]]
+
+
+function Util.copy(object,maxIdx)
+  if type(object) ~= "table" then
+    return object
+	else
+	  local t = {}
+	  local mt = getmetatable(object)
+	  local mp,mn = nil, nil
+	  if mt then
+	    mp = mt.__pairs
+	    mn = mt.__next
+	    mt.__pairs = nil
+	    mt.__next = nil
+	  end
+	  
+	  for _i, v in pairs(object) do
+	    if not maxIdx or
+	       _i <= maxIdx then
+		    t[Util.copy(_i)] = Util.copy(v)
+		  end
+		end
+		if mt then
+		  mt.__pairs = mp
+		  mt.__next = mn
+		end
+		return setmetatable(t, mt)
+	end
+end
+
+function Util.incGen(initSeed)
+  local seed = initSeed or 0
+  return function (ro)
+    if ro then return seed end
+    local r = seed
+    seed = seed+1
+    return r
+  end
 end
 
 local function tostringTableLine(d, prevStr, sep, k, v)
@@ -237,6 +289,18 @@ function Util.splitString(str, sep)
   return nil
 end
 
+function Util.truncString(str, cBegin, cEnd, ldots)
+  local len = str:len()
+  local sep = ldots or '...'
+  if cBegin and cEnd then
+    if (cBegin+cEnd+sep:len()) >= len then return str end
+    
+    local strB = str:sub(1,cBegin)
+    local strE = str:sub(-cEnd)
+    return string.format("%s%s%s", strB, sep, strE)
+  end
+end
+
 function Util.fileExists(fName)
   if not fName then return false end
   
@@ -249,16 +313,6 @@ function Util.fileExists(fName)
   end
 end
 
-function Util.tabInvert(tab)
-  if (not #tab) or #tab == 0 then return nil end
-  
-  local r = {}
-  for i=#tab,1,-1 do
-    r[#r+1] = tab[i]
-  end
-  return r
-end
-
 function Util.fact(n)
   if n > 170 then error("Util.fact: Reach the number data type limit.") end
   
@@ -267,21 +321,6 @@ function Util.fact(n)
   if n <= 2 then return n end
   
   return n * Util.fact(n-1)
-end
-
-function Util.tableGen(num,pre,pos)
-  local ret = {}
-  local e
-  --print(num)
-  for i=1,num do
-    if not pre and not pos then e = i
-    elseif not pos then e = string.format("%s%s", pre, i) --pre
-    elseif not pre then e = string.format("%s%s", i, pos) --pos
-    else e = string.format("%s%s%s", pre, i, pos) end
-    ret[#ret+1] = e 
-  end
-  
-  return ret
 end
 
 function Util.iif(cond, cTrue, cFalse, expVal)
