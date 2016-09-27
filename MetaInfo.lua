@@ -9,6 +9,7 @@ MetaInfo.cOper = {
   range = "range",
   emp = "empty",
   zm = "ZeroOrMore",
+  neg = "negation",
   opt= "optional",
   om = "oneOrMore",
   oms = "oneOrMoreSep",
@@ -30,7 +31,11 @@ function MetaInfo.tostring(mi)
   if opIdentSet_Simple:inSet(mi.opIdent) then
     if mi.params[1] == "" or not mi.params[1] then return string.format(ret, '')
     else return string.format(ret, '"'..mi.params[1]..'"') end
-  elseif mi.opIdent == "range" then return string.format(ret, '"'..mi.params[1]..'","'..mi.params[2]..'"')
+  elseif mi.opIdent == MetaInfo.cOper.range then
+    --print("MetaInfo.tostring: mi.p1, mi.p2", mi.params[1], mi.params[2])
+    assert(mi.params[1],"MetaInfo.tostring: Invalid range!")
+    assert(mi.params[2],"MetaInfo.tostring: Invalid range!")
+    return string.format(ret, '"'.. mi.params[1] ..'","'.. mi.params[2] ..'"')
   else
     local pStr = ""
     local sParams = #mi.params
