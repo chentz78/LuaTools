@@ -32,7 +32,7 @@ function MetaInfo.tostring(mi)
     if mi.params[1] == "" or not mi.params[1] then return string.format(ret, '')
     else return string.format(ret, '"'..mi.params[1]..'"') end
   elseif mi.opIdent == MetaInfo.cOper.range then
-    --print("MetaInfo.tostring: mi.p1, mi.p2", mi.params[1], mi.params[2])
+    --print("MetaInfo.tostring: mi.p1, mi.p2", Util.tostring(mi.params[1]), mi.params[2])
     assert(mi.params[1],"MetaInfo.tostring: Invalid range!")
     assert(mi.params[2],"MetaInfo.tostring: Invalid range!")
     return string.format(ret, '"'.. mi.params[1] ..'","'.. mi.params[2] ..'"')
@@ -56,7 +56,8 @@ function MetaInfo.new(idx, opId, opFunc, ...)
   --return opFunc --Turn off the meta-info
   if type(idx) == "string" then error("MetaInfo: Invalid idx value!") end
   
-  local retTab = {index=idx,opIdent=opId,opPatt=opFunc,params={...}} 
+  local retTab = {index=idx,opIdent=opId,opPatt=opFunc,params={...}}
+  
   retTab = setmetatable(retTab,{
       __index=MetaInfo,
       __call = function (f, ...)
@@ -182,7 +183,7 @@ function MetaInfo.extractStructures(g, prefix, gSort, upIndex, IgnoreOps)
       local vRet, vResult
       local lastPatt = patt
       for op in pairs(sOps) do
-        --print("Applying", op,"in",ntProd)
+        --print("Applying", op,"in",nt)
         vRet, vResult = MetaInfo.visitor(op, f, nt, lastPatt)
         if vRet then lastPatt = vResult end
       end

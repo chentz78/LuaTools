@@ -61,12 +61,12 @@ function Util.any(tab, func)
   return lAny, lRList
 end
 
-function Util.getOrderIndex(tab)
+function Util.getOrderIndex(tab, sorted)
   local r = {}
   for k,_ in pairs(tab) do
     r[#r+1] = k
   end
-  table.sort(r)
+  if sorted then table.sort(r) end
   return r
 end
 
@@ -251,6 +251,16 @@ function Util.hashCode(object)
 	else
     return SHA.hash224(Util.tostring(object))
   end
+end
+
+function Util.md5File(fName)
+  local f = io.popen(string.format('cat %s | openssl md5',fName))
+  if not f then return nil end
+  
+  local ret = f:read()
+  f:close()
+  
+  return Util.splitString(ret, ' ')[2]
 end
 
 function Util.round(v)
