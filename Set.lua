@@ -28,6 +28,10 @@ local mt = {__index=Set,
 
 local function modelInternal() return {s={}, count=0,id='Set'} end
 
+local function isASet(obj)
+  return (type(obj) == 'table' and obj.id and obj.id == 'Set')
+end
+
 local function clone(s)
   return Util.copy(s)
 end
@@ -93,6 +97,8 @@ function Set.intersection(a,b)
 end
 
 function Set.diff(a,b)
+  if not (a and b) then error("Set.diff:Invalid arguments!") end
+  
   local res = Set.new{}
   local i = 0
   for k in pairs(a.s) do
@@ -235,6 +241,10 @@ end
 
 function Set.getSortIterator(set)
   return intNextSort(set), set, nil
+end
+
+function Set.isASet(obj)
+  return isASet(obj)
 end
 
 mt.__add = Set.union

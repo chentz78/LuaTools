@@ -61,12 +61,13 @@ function Util.any(tab, func)
   return lAny, lRList
 end
 
-function Util.getOrderIndex(tab, sorted)
+--Return a table with the keys sorted.
+function Util.getOrderIndex(tab)
   local r = {}
   for k,_ in pairs(tab) do
     r[#r+1] = k
   end
-  if sorted then table.sort(r) end
+  table.sort(r)
   return r
 end
 
