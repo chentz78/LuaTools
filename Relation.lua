@@ -104,6 +104,7 @@ local function internalAdd(rel, key, val, isSetBasedValue)
       c = c-valKSet:card()
       valKSet = valKSet + val
       c = c+valKSet:card()
+      rel.relSet[key] = valKSet
     else
       rel.relSet[key] = Set.new(val)
       c = c + val:card()
@@ -419,6 +420,10 @@ function Relation.getSetIterationSort(rel)
   return intNextSetKeySort(rel), rel, nil
 end
 
+function Relation.getElemIteration(rel)
+  return internalNext(rel, false), rel, nil
+end
+
 function Relation.filterOverRelation(rel, iter, filter, isSetBased)
   --print("Relation.filterOverRelation", rel, iter, filter, isSetBased)
   if not (filter or iter) then return nil end
@@ -578,6 +583,10 @@ function Relation.getAleatoryPath(rel, a)
   return ret
 end
 
+function Relation.isARelation(obj)
+  return isARelation(obj)
+end
+
 --[[
 function Relation.card2(rel)
   local i = 0
@@ -592,6 +601,10 @@ mt.__eq  = Relation.equal
 mt.__tostring = Relation.tostring
 mt.__concat = Relation.composition
 mt.__pow = Relation.power
-mt.__mod = Relation.subscript 
+mt.__mod = Relation.subscript
+--[[
+__add = Relation.union, if a and b are Relations
+__add = Relation.transitiveClosure, if a is Relation and b is number
+]]
 
 return Relation
