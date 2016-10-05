@@ -1,3 +1,9 @@
+--- Realy simple array implementation.
+-- Simple example
+--    local Array = require("Array")
+--    local ar = Array.new{1,2,3,4}
+--    print(ar) 
+
 local Array = {}
 
 local Debug = require("dbg")

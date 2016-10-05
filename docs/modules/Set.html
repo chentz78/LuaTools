@@ -1,0 +1,758 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>LuaTools Documentation</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>LuaTools</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+<li><a href="#metamethods">metamethods</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/Array.html">Array</a></li>
+  <li><strong>Set</strong></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>Set</code></h1>
+<p>A set implementation.</p>
+<p>
+
+<p> Basic Set usage</p>
+
+<pre>
+<span class="keyword">local</span> s1, s2, s3 = Set.new{<span class="string">"A"</span>}, Set.new(<span class="string">"A"</span>), Set.new(<span class="string">"A"</span>)
+<span class="global">print</span>(s1:card())
+==&gt; <span class="number">1</span>
+<span class="global">print</span>(s2:card())
+==&gt; <span class="number">1</span>
+<span class="global">print</span>(#s1 == #s2) <span class="comment">-- Working on Lua 5.2 and above
+</span>==&gt; <span class="keyword">true</span>
+<span class="global">print</span>(s1 == s2) <span class="comment">--Equality
+</span>==&gt; <span class="keyword">true</span>
+<span class="global">print</span>(s1 ~= s2)
+==&gt; <span class="keyword">false</span>
+<span class="global">print</span>(s2 == s1) <span class="comment">--Comutativity
+</span>==&gt; <span class="keyword">true</span>
+<span class="global">print</span>(s1==s2 <span class="keyword">and</span> s2==s3 <span class="keyword">and</span> s1==s3) <span class="comment">--Transitivity
+</span>==&gt; <span class="keyword">true</span>
+<span class="global">print</span>(s1 + s2)
+==&gt; {<span class="string">"A"</span>}
+<span class="global">print</span>(s1 + Set.new{<span class="string">"A"</span>,<span class="string">"B"</span>})
+==&gt; {<span class="string">"A"</span>}
+</pre>
+
+<p> Iterate over a set</p>
+
+<pre>
+<span class="keyword">local</span> s = Set.New{<span class="string">'A'</span>,<span class="string">'B'</span>,<span class="string">'C'</span>}
+<span class="comment">--Unsorted iterator
+</span><span class="keyword">for</span> e <span class="keyword">in</span> <span class="global">pairs</span>(s) <span class="keyword">do</span>
+  <span class="global">print</span>(e)
+<span class="keyword">end</span>
+
+<span class="comment">--Sorted iterator
+</span><span class="keyword">for</span> e <span class="keyword">in</span> s:getSortIterator() <span class="keyword">do</span>
+  <span class="global">print</span>(e)
+<span class="keyword">end</span>
+</pre>
+
+</p>
+    <h3>Info:</h3>
+    <ul>
+        <li><strong>Author</strong>:  Cleverton Hentz</p>
+
+<p> Dependencies: <code>dbg</code>, <code>Util</code></li>
+    </ul>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#new">new (l)</a></td>
+	<td class="summary">Create a new Set object.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#union">union (a, b)</a></td>
+	<td class="summary">union of sets.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#intersection">intersection (a, b)</a></td>
+	<td class="summary">intersection of sets.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#diff">diff (a, b)</a></td>
+	<td class="summary">difference of sets.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#inSet">inSet (set, e)</a></td>
+	<td class="summary">Set membership.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#card">card (set)</a></td>
+	<td class="summary">set cardinality</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#product">product (a, b)</a></td>
+	<td class="summary">product of sets</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#equality">equality (a, b)</a></td>
+	<td class="summary">equality between sets</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#table">table (set)</a></td>
+	<td class="summary">Convert the set to i-based table</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#include">include (set, e)</a></td>
+	<td class="summary">Element inclusion</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#exclude">exclude (set, e)</a></td>
+	<td class="summary">Element exclusion</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#tostring">tostring (set)</a></td>
+	<td class="summary">Convert a set to string</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#first">first (set)</a></td>
+	<td class="summary">get the first set element</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#max">max (set)</a></td>
+	<td class="summary">get the highest element in the set</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#min">min (set)</a></td>
+	<td class="summary">get the lowest element in the set</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getSortIterator">getSortIterator (set)</a></td>
+	<td class="summary">get a sorted iterator</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#isASet">isASet (obj)</a></td>
+	<td class="summary">Check if an object is a set</td>
+	</tr>
+</table>
+<h2><a href="#metamethods">metamethods</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#__pairs">__pairs ()</a></td>
+	<td class="summary">iterate over a set without an order.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#__add">__add ()</a></td>
+	<td class="summary">union of sets.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#__sub">__sub ()</a></td>
+	<td class="summary">difference of sets.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#__eq">__eq ()</a></td>
+	<td class="summary">equality of sets.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#__mul">__mul ()</a></td>
+	<td class="summary">intersection of sets.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#__tostring">__tostring ()</a></td>
+	<td class="summary">convert a set to string.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "new"></a>
+    <strong>new (l)</strong>
+    </dt>
+    <dd>
+    Create a new Set object.
+ It create a new set object based on the parameter.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">l</span>
+         Source data. Could be nil, table or another Set
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        a new set
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <li><pre class="example"><span class="keyword">local</span> emptyS = Set.New()</pre></li>
+        <li><pre class="example"><span class="keyword">local</span> s1 = Set.New{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">4</span>}
+<span class="keyword">local</span> s1Clone = Set.New(s1)</pre></li>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "union"></a>
+    <strong>union (a, b)</strong>
+    </dt>
+    <dd>
+    union of sets.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">a</span>
+
+
+
+        </li>
+        <li><span class="parameter">b</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "intersection"></a>
+    <strong>intersection (a, b)</strong>
+    </dt>
+    <dd>
+    intersection of sets.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">a</span>
+
+
+
+        </li>
+        <li><span class="parameter">b</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "diff"></a>
+    <strong>diff (a, b)</strong>
+    </dt>
+    <dd>
+    difference of sets.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">a</span>
+
+
+
+        </li>
+        <li><span class="parameter">b</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "inSet"></a>
+    <strong>inSet (set, e)</strong>
+    </dt>
+    <dd>
+    Set membership.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">set</span>
+
+
+
+        </li>
+        <li><span class="parameter">e</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "card"></a>
+    <strong>card (set)</strong>
+    </dt>
+    <dd>
+    set cardinality
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">set</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "product"></a>
+    <strong>product (a, b)</strong>
+    </dt>
+    <dd>
+    product of sets
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">a</span>
+
+
+
+        </li>
+        <li><span class="parameter">b</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "equality"></a>
+    <strong>equality (a, b)</strong>
+    </dt>
+    <dd>
+    equality between sets
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">a</span>
+
+
+
+        </li>
+        <li><span class="parameter">b</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "table"></a>
+    <strong>table (set)</strong>
+    </dt>
+    <dd>
+    Convert the set to i-based table
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">set</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "include"></a>
+    <strong>include (set, e)</strong>
+    </dt>
+    <dd>
+    Element inclusion
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">set</span>
+         The set
+        </li>
+        <li><span class="parameter">e</span>
+         The element
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+        The reference to the set</li>
+        <li>
+        <code>true</code> if <code>e</code> was included and <code>false</code> otherwise.</li>
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "exclude"></a>
+    <strong>exclude (set, e)</strong>
+    </dt>
+    <dd>
+    Element exclusion
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">set</span>
+
+
+
+        </li>
+        <li><span class="parameter">e</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "tostring"></a>
+    <strong>tostring (set)</strong>
+    </dt>
+    <dd>
+    Convert a set to string
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">set</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "first"></a>
+    <strong>first (set)</strong>
+    </dt>
+    <dd>
+    get the first set element
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">set</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "max"></a>
+    <strong>max (set)</strong>
+    </dt>
+    <dd>
+    get the highest element in the set
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">set</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "min"></a>
+    <strong>min (set)</strong>
+    </dt>
+    <dd>
+    get the lowest element in the set
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">set</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getSortIterator"></a>
+    <strong>getSortIterator (set)</strong>
+    </dt>
+    <dd>
+    get a sorted iterator
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">set</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "isASet"></a>
+    <strong>isASet (obj)</strong>
+    </dt>
+    <dd>
+    Check if an object is a set
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">obj</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="metamethods"></a>metamethods</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "__pairs"></a>
+    <strong>__pairs ()</strong>
+    </dt>
+    <dd>
+    iterate over a set without an order.
+
+
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../modules/Set.html#getSortIterator">Set.getSortIterator</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "__add"></a>
+    <strong>__add ()</strong>
+    </dt>
+    <dd>
+    union of sets.
+
+
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../modules/Set.html#union">Set.union</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "__sub"></a>
+    <strong>__sub ()</strong>
+    </dt>
+    <dd>
+    difference of sets.
+
+
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../modules/Set.html#diff">Set.diff</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "__eq"></a>
+    <strong>__eq ()</strong>
+    </dt>
+    <dd>
+    equality of sets.
+
+
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../modules/Set.html#equality">Set.equality</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "__mul"></a>
+    <strong>__mul ()</strong>
+    </dt>
+    <dd>
+    intersection of sets.
+
+
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../modules/Set.html#intersection">Set.intersection</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "__tostring"></a>
+    <strong>__tostring ()</strong>
+    </dt>
+    <dd>
+    convert a set to string.
+
+
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../modules/Set.html#tostring">Set.tostring</a>
+    </ul>
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.5</a></i>
+<i style="float:right;">Last updated 2016-10-05 19:45:58 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

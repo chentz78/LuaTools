@@ -1,0 +1,9 @@
+project = 'LuaTools'
+description = 'A set of modules to Lua'
+full_description = [[Full description]]
+title = 'LuaTools Documentation'
+use_markdown_titles = true
+dir='.'
+format = 'discount'
+sort_modules=true
+file = '../'
