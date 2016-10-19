@@ -2,6 +2,9 @@ local Set = require("Set")
 local Rel = require("Relation")
 local Util = require("Util")
 
+--- Unpack compatibility with Lua 5.3 and 5.X
+local unpack = unpack or table.unpack
+
 local MetaInfo = {}
 
 MetaInfo.cOper = {
@@ -73,7 +76,7 @@ function MetaInfo.visitor(pattIdent, func, ntProd, patt, ...)
     --print("fRec1:", p)
     if type(p) == "table" then
       --print("fRec2:", p, p.opIdent)
-      return MetaInfo.visitor(pattIdent, func, ntProd, p, table.unpack(addParams))
+      return MetaInfo.visitor(pattIdent, func, ntProd, p, unpack(addParams))
     else return false, p end
   end
   
@@ -96,7 +99,7 @@ function MetaInfo.visitor(pattIdent, func, ntProd, patt, ...)
   else
     local lRet, lParams = Util.any(patt.params, fRec)
     if lRet then
-      return lRet, MetaInfo.new(patt.index, patt.opIdent, patt.opPatt, table.unpack(lParams))
+      return lRet, MetaInfo.new(patt.index, patt.opIdent, patt.opPatt, unpack(lParams))
     else
       return false, patt
     end
