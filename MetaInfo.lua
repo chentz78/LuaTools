@@ -7,6 +7,7 @@ local unpack = unpack or table.unpack
 
 local MetaInfo = {}
 
+--- Table of operators constants 
 MetaInfo.cOper = {
   term = "terminal",
   range = "range",

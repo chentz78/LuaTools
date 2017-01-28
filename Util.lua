@@ -325,7 +325,7 @@ function Util.fileExists(fName)
 end
 
 function Util.fact(n)
-  if n > 170 then error("Util.fact: Reach the number data type limit.") end
+  if n > 20 then error("Util.fact: Reach the number data type limit.") end
   
   if n < 0 then return 0 end
   if n == 0 then return 1 end
@@ -333,6 +333,9 @@ function Util.fact(n)
   
   return n * Util.fact(n-1)
 end
+
+--Factorial test
+--assert(Util.fact(0) == 1)
 
 function Util.iif(cond, cTrue, cFalse, expVal)
  local rCond, rExpVal, rTrue, rFalse

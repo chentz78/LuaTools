@@ -6,7 +6,6 @@ Extracted from jcombinatorics (https://github.com/aisrael/jcombinatorics/blob/ma
 * 
 *  Copyright (c) 2009 by Alistair A. Israel.
  
-*  This software is made available under the terms of the MIT License.
 *  See LICENSE.txt.
 *
 * Created Sep 2, 2009
@@ -38,6 +37,19 @@ function Combinatorics.Fact(n)
   if n <= 2 then return BN.number(n) end
   
   return n * Combinatorics.Fact(n-1)
+end
+
+local LMI = BN.number(math.maxinteger or math.pow(10,10))
+
+function Combinatorics.printBigNumber(n)
+  if type(n) == "number" or n < LMI then return string.format("%s",n)
+  else
+    local len = BN.tostring(n):len()-5
+    local nDiv = BN.pow(10,len)
+    --print(n,BN.bits(n), len)
+    --print(nDiv)
+    return string.format("%s+e%i",BN.tonumber(BN.div(n,nDiv)), len)
+  end
 end
 
 local fact = Combinatorics.Fact
@@ -151,7 +163,7 @@ end
 --Combinations
 -- Naive Implementation of Binomial Coefficient - http://mathworld.wolfram.com/BinomialCoefficient.html
 local function fInternalBinCoeffFact(n,k)
-  print("fInternalBinCoeffFact:",n,k)
+  --print("fInternalBinCoeffFact:",n,k)
   if n < k then return 0
   elseif n == k then return 1
   elseif k == 1 then return n
@@ -165,9 +177,9 @@ local function fInternalBinCoeffFact(n,k)
     --print("fInternalBinCoeffFact:b",b)
     c,r = BN.divmod(a, b)
     retC = BN.tostring(c)
-    print("fInternalBinCoeffFact:c len",string.len(retC))
-    print("fInternalBinCoeffFact:c",c)
-    print("fInternalBinCoeffFact:r",r)
+    --print("fInternalBinCoeffFact:c len",string.len(retC))
+    --print("fInternalBinCoeffFact:c",c)
+    --print("fInternalBinCoeffFact:r",r)
     return c
     --print("fInternalBinCoeffFact:",os.clock()-t)
     --Util.round(
@@ -245,12 +257,15 @@ function Combinatorics.BinCoefficient(n,k)
   
   --return fbinCoeff(n,k)
   local ret = fbinCoeff(n,k)
+  return ret
+  --[[
   if ret > BN.number(math.maxinteger) then
-    error("BinCoefficient: Range of n,k is not supported!")
+    error(string.format("BinCoefficient: Range of n:%i, k:%i is not supported! ret: %s", n,k, ret))
     return ret
   else
     return BN.tonumber(ret)
   end
+  ]]
 end
 
 --[[
