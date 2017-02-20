@@ -1,0 +1,691 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>LuaTools Documentation</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>LuaTools</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/Array.html">Array</a></li>
+  <li><a href="../modules/Relation.html">Relation</a></li>
+  <li><a href="../modules/Set.html">Set</a></li>
+  <li><strong>Util</strong></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>Util</code></h1>
+<p>A collection of util functions.</p>
+<p>
+
+</p>
+    <h3>Info:</h3>
+    <ul>
+        <li><strong>Author</strong>:  Cleverton Hentz</p>
+
+<p> Dependencies: <code>sha2</code></li>
+    </ul>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#emptyTable">emptyTable (t)</a></td>
+	<td class="summary">check if the table is empty.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#sizeTable">sizeTable (t, index)</a></td>
+	<td class="summary">check the size of the table.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#map">map (tab, func, idxSort)</a></td>
+	<td class="summary">map like function to tables.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getOrderIndex">getOrderIndex (tab)</a></td>
+	<td class="summary">return a index sorted table based on keys.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getOrderValue">getOrderValue (tab)</a></td>
+	<td class="summary">return a index sorted table based on values.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#tabInvert">tabInvert (tab)</a></td>
+	<td class="summary">invert the index of the input table.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#tableGen">tableGen (num, pre, pos)</a></td>
+	<td class="summary">generate a standard table.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#tableFilter">tableFilter (tab, fCond, shortStop)</a></td>
+	<td class="summary">filter a table based on a function constraint.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#defTableValue">defTableValue (tab, tabDef)</a></td>
+	<td class="summary">generate a table based on default values.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#incGen">incGen (initSeed)</a></td>
+	<td class="summary">get a increment function.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#tostring">tostring (obj, d)</a></td>
+	<td class="summary">general object to string function.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#hashCode">hashCode (object)</a></td>
+	<td class="summary">hash function based on Lua SHA224 implementation.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#md5File">md5File (fName)</a></td>
+	<td class="summary">fast openssl md5 calculate.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#round">round (v)</a></td>
+	<td class="summary">traditional round.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#readContent">readContent (fname, func)</a></td>
+	<td class="summary">read text file content.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#splitString">splitString (str, sep)</a></td>
+	<td class="summary">split string using the separator.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#fileExists">fileExists (fName)</a></td>
+	<td class="summary">check if file exists.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#fact">fact (n)</a></td>
+	<td class="summary">range limited factorial implementation.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#iif">iif (cond, cTrue, cFalse, expVal)</a></td>
+	<td class="summary">ternary like function.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#defVal">defVal (chkVal, defVal, expVal)</a></td>
+	<td class="summary">define default values if empty</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "emptyTable"></a>
+    <strong>emptyTable (t)</strong>
+    </dt>
+    <dd>
+    check if the table is empty.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">t</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "sizeTable"></a>
+    <strong>sizeTable (t, index)</strong>
+    </dt>
+    <dd>
+    check the size of the table.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">t</span>
+
+
+
+        </li>
+        <li><span class="parameter">index</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "map"></a>
+    <strong>map (tab, func, idxSort)</strong>
+    </dt>
+    <dd>
+    map like function to tables.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">tab</span>
+
+
+
+        </li>
+        <li><span class="parameter">func</span>
+
+
+
+        </li>
+        <li><span class="parameter">idxSort</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getOrderIndex"></a>
+    <strong>getOrderIndex (tab)</strong>
+    </dt>
+    <dd>
+    return a index sorted table based on keys.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">tab</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getOrderValue"></a>
+    <strong>getOrderValue (tab)</strong>
+    </dt>
+    <dd>
+    return a index sorted table based on values.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">tab</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "tabInvert"></a>
+    <strong>tabInvert (tab)</strong>
+    </dt>
+    <dd>
+    invert the index of the input table.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">tab</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "tableGen"></a>
+    <strong>tableGen (num, pre, pos)</strong>
+    </dt>
+    <dd>
+    generate a standard table.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">num</span>
+
+
+
+        </li>
+        <li><span class="parameter">pre</span>
+
+
+
+        </li>
+        <li><span class="parameter">pos</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "tableFilter"></a>
+    <strong>tableFilter (tab, fCond, shortStop)</strong>
+    </dt>
+    <dd>
+    filter a table based on a function constraint.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">tab</span>
+
+
+
+        </li>
+        <li><span class="parameter">fCond</span>
+
+
+
+        </li>
+        <li><span class="parameter">shortStop</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "defTableValue"></a>
+    <strong>defTableValue (tab, tabDef)</strong>
+    </dt>
+    <dd>
+    generate a table based on default values.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">tab</span>
+
+
+
+        </li>
+        <li><span class="parameter">tabDef</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "incGen"></a>
+    <strong>incGen (initSeed)</strong>
+    </dt>
+    <dd>
+    get a increment function.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">initSeed</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "tostring"></a>
+    <strong>tostring (obj, d)</strong>
+    </dt>
+    <dd>
+    general object to string function.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">obj</span>
+
+
+
+        </li>
+        <li><span class="parameter">d</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "hashCode"></a>
+    <strong>hashCode (object)</strong>
+    </dt>
+    <dd>
+    hash function based on Lua SHA224 implementation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">object</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "md5File"></a>
+    <strong>md5File (fName)</strong>
+    </dt>
+    <dd>
+    fast openssl md5 calculate.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">fName</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "round"></a>
+    <strong>round (v)</strong>
+    </dt>
+    <dd>
+    traditional round.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">v</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "readContent"></a>
+    <strong>readContent (fname, func)</strong>
+    </dt>
+    <dd>
+    read text file content.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">fname</span>
+
+
+
+        </li>
+        <li><span class="parameter">func</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "splitString"></a>
+    <strong>splitString (str, sep)</strong>
+    </dt>
+    <dd>
+    split string using the separator.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">str</span>
+
+
+
+        </li>
+        <li><span class="parameter">sep</span>
+
+
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Indexed table
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "fileExists"></a>
+    <strong>fileExists (fName)</strong>
+    </dt>
+    <dd>
+    check if file exists.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">fName</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "fact"></a>
+    <strong>fact (n)</strong>
+    </dt>
+    <dd>
+    range limited factorial implementation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">n</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "iif"></a>
+    <strong>iif (cond, cTrue, cFalse, expVal)</strong>
+    </dt>
+    <dd>
+    ternary like function.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">cond</span>
+
+
+
+        </li>
+        <li><span class="parameter">cTrue</span>
+
+
+
+        </li>
+        <li><span class="parameter">cFalse</span>
+
+
+
+        </li>
+        <li><span class="parameter">expVal</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "defVal"></a>
+    <strong>defVal (chkVal, defVal, expVal)</strong>
+    </dt>
+    <dd>
+    define default values if empty
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">chkVal</span>
+
+
+
+        </li>
+        <li><span class="parameter">defVal</span>
+
+
+
+        </li>
+        <li><span class="parameter">expVal</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.5</a></i>
+<i style="float:right;">Last updated 2017-02-14 15:35:06 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

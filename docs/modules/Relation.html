@@ -1,0 +1,782 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>LuaTools Documentation</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>LuaTools</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+<li><a href="#metamethods">metamethods</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/Array.html">Array</a></li>
+  <li><strong>Relation</strong></li>
+  <li><a href="../modules/Set.html">Set</a></li>
+  <li><a href="../modules/Util.html">Util</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>Relation</code></h1>
+<p>A relation implementation.</p>
+<p>
+
+</p>
+    <h3>Info:</h3>
+    <ul>
+        <li><strong>Author</strong>: Cleverton Hentz</p>
+
+<p> Dependencies: <a href="../modules/Set.html#">Set</a>, <code>Queue</code>, <code>dbg</code>, <a href="../modules/Util.html#">Util</a></li>
+    </ul>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#new">new (r, isSetBasedTab)</a></td>
+	<td class="summary">create a new relation.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#card">card (rel)</a></td>
+	<td class="summary">cardinality of the relation.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#include">include (rel, key, val, isSetBasedValue)</a></td>
+	<td class="summary">include an element on the relation.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#domain">domain (rel)</a></td>
+	<td class="summary">return the domain of the relation</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#range">range (rel)</a></td>
+	<td class="summary">return the range of the relation.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#equal">equal (r1, r2)</a></td>
+	<td class="summary">compare if two relatio are equals.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subscript">subscript (rel, key)</a></td>
+	<td class="summary">return only the elements with the key.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#union">union (r1, r2)</a></td>
+	<td class="summary">union over the relations.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#composition">composition (r1, r2)</a></td>
+	<td class="summary">composite the relation <code>r1</code> with <code>r2</code></td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#power">power (rel, idx)</a></td>
+	<td class="summary">relation power.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#transitiveClosure">transitiveClosure (rel, idx)</a></td>
+	<td class="summary">transitive closure over the relation.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#invert">invert (rel)</a></td>
+	<td class="summary">invert the domain and range on the relation</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#isFunction">isFunction (rel)</a></td>
+	<td class="summary">check if the relation is a function.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#hasDirectCycles">hasDirectCycles (rel, filter)</a></td>
+	<td class="summary">check if the relation has cycles</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#tostring">tostring (rel)</a></td>
+	<td class="summary">convert the relation into a string.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#first">first (rel, key)</a></td>
+	<td class="summary">get the first element</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#BFS">BFS (rel, root, funItem, retRevPath)</a></td>
+	<td class="summary">Breadth first search over the relation.</td>
+	</tr>
+</table>
+<h2><a href="#metamethods">metamethods</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#__pairs">__pairs ()</a></td>
+	<td class="summary">iterate over a relation without an order.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#__call">__call ()</a></td>
+	<td class="summary">Include a element in the relation.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#__add">__add ()</a></td>
+	<td class="summary">Could be union or transitive closure, depends on the second operand.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#__eq">__eq ()</a></td>
+	<td class="summary">equality of relations.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#__tostring">__tostring ()</a></td>
+	<td class="summary">convert a relation to string.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#__concat">__concat ()</a></td>
+	<td class="summary">Relation composition.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#__pow">__pow ()</a></td>
+	<td class="summary">Relation power.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#__mod">__mod ()</a></td>
+	<td class="summary">Relation subscript.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "new"></a>
+    <strong>new (r, isSetBasedTab)</strong>
+    </dt>
+    <dd>
+    create a new relation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">r</span>
+
+
+
+        </li>
+        <li><span class="parameter">isSetBasedTab</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "card"></a>
+    <strong>card (rel)</strong>
+    </dt>
+    <dd>
+    cardinality of the relation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">rel</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "include"></a>
+    <strong>include (rel, key, val, isSetBasedValue)</strong>
+    </dt>
+    <dd>
+    include an element on the relation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">rel</span>
+
+
+
+        </li>
+        <li><span class="parameter">key</span>
+
+
+
+        </li>
+        <li><span class="parameter">val</span>
+
+
+
+        </li>
+        <li><span class="parameter">isSetBasedValue</span>
+        print("Relation.include", rel, key, val)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "domain"></a>
+    <strong>domain (rel)</strong>
+    </dt>
+    <dd>
+    return the domain of the relation
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">rel</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "range"></a>
+    <strong>range (rel)</strong>
+    </dt>
+    <dd>
+    return the range of the relation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">rel</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "equal"></a>
+    <strong>equal (r1, r2)</strong>
+    </dt>
+    <dd>
+    compare if two relatio are equals.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">r1</span>
+
+
+
+        </li>
+        <li><span class="parameter">r2</span>
+        print("Relation.equal", r1, r2) Shortcuts print("Relation.equal", "ID")
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subscript"></a>
+    <strong>subscript (rel, key)</strong>
+    </dt>
+    <dd>
+    return only the elements with the key.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">rel</span>
+
+
+
+        </li>
+        <li><span class="parameter">key</span>
+        print("Relation.subscript", key)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "union"></a>
+    <strong>union (r1, r2)</strong>
+    </dt>
+    <dd>
+    union over the relations.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">r1</span>
+
+
+
+        </li>
+        <li><span class="parameter">r2</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "composition"></a>
+    <strong>composition (r1, r2)</strong>
+    </dt>
+    <dd>
+    composite the relation <code>r1</code> with <code>r2</code>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">r1</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#pdf-print">print("Relation.composition</a></span>
+
+
+
+        </li>
+        <li><span class="parameter">r2</span>
+        ", r1, r2)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "power"></a>
+    <strong>power (rel, idx)</strong>
+    </dt>
+    <dd>
+    relation power.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">rel</span>
+
+
+
+        </li>
+        <li><span class="parameter">idx</span>
+        print("Relation.power", rel, idx)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "transitiveClosure"></a>
+    <strong>transitiveClosure (rel, idx)</strong>
+    </dt>
+    <dd>
+    transitive closure over the relation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">rel</span>
+
+
+
+        </li>
+        <li><span class="parameter">idx</span>
+        print("Relation.transitiveClosure", rel, idx)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "invert"></a>
+    <strong>invert (rel)</strong>
+    </dt>
+    <dd>
+    invert the domain and range on the relation
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">rel</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "isFunction"></a>
+    <strong>isFunction (rel)</strong>
+    </dt>
+    <dd>
+    check if the relation is a function.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">rel</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "hasDirectCycles"></a>
+    <strong>hasDirectCycles (rel, filter)</strong>
+    </dt>
+    <dd>
+    check if the relation has cycles
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">rel</span>
+
+
+
+        </li>
+        <li><span class="parameter">filter</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "tostring"></a>
+    <strong>tostring (rel)</strong>
+    </dt>
+    <dd>
+    convert the relation into a string.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">rel</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "first"></a>
+    <strong>first (rel, key)</strong>
+    </dt>
+    <dd>
+    get the first element
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">rel</span>
+
+
+
+        </li>
+        <li><span class="parameter">key</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "BFS"></a>
+    <strong>BFS (rel, root, funItem, retRevPath)</strong>
+    </dt>
+    <dd>
+    Breadth first search over the relation.
+ Do a breadth first search from <code>root</code> over the relation.
+ <a href="http://en.wikipedia.org/wiki/Breadth-first_search">Source</a>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">rel</span>
+         Relation
+        </li>
+        <li><span class="parameter">root</span>
+         The root node to the search.
+        </li>
+        <li><span class="parameter">funItem</span>
+         Function executed over the elements. It has the signature <code>funItem(elem, topIndex)</code>.
+        </li>
+        <li><span class="parameter">retRevPath</span>
+         Save the sequence nodes.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        return the path if <code>retRevPath</code> is true.
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">rel:BFS(<span class="string">"nRoot"</span>, <span class="keyword">function</span>(elem, topIndex)
+  <span class="global">print</span>(elem, topIndex)
+  <span class="keyword">return</span> <span class="keyword">true</span>
+<span class="keyword">end</span>)</pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="metamethods"></a>metamethods</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "__pairs"></a>
+    <strong>__pairs ()</strong>
+    </dt>
+    <dd>
+    iterate over a relation without an order.
+
+
+
+
+
+    <h3>See also:</h3>
+    <ul>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "__call"></a>
+    <strong>__call ()</strong>
+    </dt>
+    <dd>
+    Include a element in the relation.
+
+
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../modules/Relation.html#include">Relation.include</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "__add"></a>
+    <strong>__add ()</strong>
+    </dt>
+    <dd>
+    Could be union or transitive closure, depends on the second operand.
+
+
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <li><a href="../modules/Relation.html#union">Relation.union</a></li>
+         <li><a href="../modules/Relation.html#transitiveClosure">Relation.transitiveClosure</a></li>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "__eq"></a>
+    <strong>__eq ()</strong>
+    </dt>
+    <dd>
+    equality of relations.
+
+
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../modules/Relation.html#equal">Relation.equal</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "__tostring"></a>
+    <strong>__tostring ()</strong>
+    </dt>
+    <dd>
+    convert a relation to string.
+
+
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../modules/Relation.html#tostring">Relation.tostring</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "__concat"></a>
+    <strong>__concat ()</strong>
+    </dt>
+    <dd>
+    Relation composition.
+
+
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../modules/Relation.html#composition">Relation.composition</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "__pow"></a>
+    <strong>__pow ()</strong>
+    </dt>
+    <dd>
+    Relation power.
+
+
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../modules/Relation.html#power">Relation.power</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "__mod"></a>
+    <strong>__mod ()</strong>
+    </dt>
+    <dd>
+    Relation subscript.
+
+
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../modules/Relation.html#subscript">Relation.subscript</a>
+    </ul>
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.5</a></i>
+<i style="float:right;">Last updated 2017-02-14 15:35:06 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

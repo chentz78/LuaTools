@@ -1,14 +1,22 @@
+--- A collection of util functions.
+-- @author Cleverton Hentz
+--
+-- Dependencies: `sha2`
+-- @module Util
+
 local SHA = require("sha2")
 
 local Util = {}
 
 -- [[==Table related functions ==]]
 
+--- check if the table is empty.
 function Util.emptyTable(t)
   if next(t) then return false end
   return true
 end
 
+--- check the size of the table.
 function Util.sizeTable(t, index)
   if index then return #t end
   
@@ -19,6 +27,7 @@ function Util.sizeTable(t, index)
   return i
 end
 
+--- map like function to tables.
 function Util.map(tab, func, idxSort)
   if not (tab and func) then error(string.format("map: Invalid arguments! %s - %s",tab, func)) end
   --print("Util.map")
@@ -61,7 +70,7 @@ function Util.any(tab, func)
   return lAny, lRList
 end
 
---Return a table with the keys sorted.
+--- return a index sorted table based on keys.
 function Util.getOrderIndex(tab)
   local r = {}
   for k,_ in pairs(tab) do
@@ -71,6 +80,7 @@ function Util.getOrderIndex(tab)
   return r
 end
 
+--- return a index sorted table based on values.
 function Util.getOrderValue(tab)
   local vals = {}
   local sortVal = {}
@@ -89,6 +99,7 @@ function Util.getOrderValue(tab)
   return ret
 end
 
+--- invert the index of the input table.
 function Util.tabInvert(tab)
   if (not #tab) or #tab == 0 then return nil end
   
@@ -99,6 +110,7 @@ function Util.tabInvert(tab)
   return r
 end
 
+--- generate a standard table.
 function Util.tableGen(num,pre,pos)
   local ret = {}
   local e
@@ -114,6 +126,7 @@ function Util.tableGen(num,pre,pos)
   return ret
 end
 
+--- filter a table based on a function constraint.
 function Util.tableFilter(tab,fCond, shortStop)
   if not (tab and fCond) then error("Util.tableFilter: Invalid parameters!"); end
   
@@ -133,6 +146,44 @@ function Util.tableFilter(tab,fCond, shortStop)
     end
   end
   
+  return ret
+end
+
+--- union over the keys of the input tables.
+-- @return A indexed table with all keys.
+function Util.keyUnion(a,b)
+  if not (type(a) == "table" and type(b) == "table") then error("Util.keyUnion: Invalid argument!") end
+  
+  local keys = {}
+  local setK = {}
+  for k,v in pairs(a) do
+    if not setK[k] then
+      keys[#keys+1] = k
+      setK[k] = true
+    end
+  end
+  
+  for k,v in pairs(b) do
+    if not setK[k] then
+      keys[#keys+1] = k
+      setK[k] = true
+    end
+  end
+  table.sort(keys)
+  return keys
+end
+
+--- generate a table based on default values.
+-- @param tab The reference table.
+-- @param tabDef The default table.
+function Util.defTableValue(tab, tabDef)
+  if not tab then return Util.copy(tabDef) end
+  
+  local keys = Util.keyUnion(tab, tabDef)
+  local ret = {}
+  for _,kD in ipairs(keys) do
+    ret[kD] = Util.defVal(tab[kD], tabDef[kD])
+  end
   return ret
 end
 
@@ -167,6 +218,7 @@ function Util.copy(object,maxIdx)
 	end
 end
 
+--- get a increment function.
 function Util.incGen(initSeed)
   local seed = initSeed or 0
   return function (ro)
@@ -188,6 +240,7 @@ local function tostringTableLine(d, prevStr, sep, k, v)
 	return string.format("%s%s%s%s", rsl, d.itemOpen, Util.tostring(v,d), d.itemClose)
 end
 
+--- general object to string function.
 function Util.tostring(obj, d)
   local identStr = nil
   if type(d) ~= "table" then
@@ -246,6 +299,7 @@ function Util.tostring(obj, d)
 	return tostring(obj)
 end
 
+--- hash function based on Lua SHA224 implementation.
 function Util.hashCode(object)
   if type(object) ~= "table" then
     return SHA.hash224(tostring(object))
@@ -254,6 +308,25 @@ function Util.hashCode(object)
   end
 end
 
+--- execute a command line command.
+function Util.exeCmdLine(cmd)
+  local f,a,b = io.popen(cmd)
+  if not f then return nil end
+  
+  local ret = {}
+  local cnt
+  while true do
+    cnt = f:read()
+    if not cnt then break end
+    ret[#ret+1] = cnt
+  end
+  
+  f:close()
+  
+  return ret
+end
+
+--- fast openssl md5 calculate.
 function Util.md5File(fName)
   local f = io.popen(string.format('cat %s | openssl md5',fName))
   if not f then return nil end
@@ -264,6 +337,7 @@ function Util.md5File(fName)
   return Util.splitString(ret, ' ')[2]
 end
 
+--- traditional round.
 function Util.round(v)
   local a, b = math.modf(v)
   if b >= 0.5 then a = a + 1 end 
@@ -274,6 +348,7 @@ function Util.percShow(a,b)
   return ((a/b)-1)*100
 end
 
+--- read text file content.
 function Util.readContent(fname, func)
   local file = io.open(fname, "r")
   local cnt = nil
@@ -290,6 +365,8 @@ function Util.readContent(fname, func)
   return i
 end
 
+--- split string using the separator.
+-- @return Indexed table
 function Util.splitString(str, sep)
   local ret = {}
   for v in string.gmatch(str, "([^"..sep.."]+)") do
@@ -312,6 +389,7 @@ function Util.truncString(str, cBegin, cEnd, ldots)
   end
 end
 
+--- check if file exists.
 function Util.fileExists(fName)
   if not fName then return false end
   
@@ -324,6 +402,7 @@ function Util.fileExists(fName)
   end
 end
 
+--- range limited factorial implementation.
 function Util.fact(n)
   if n > 20 then error("Util.fact: Reach the number data type limit.") end
   
@@ -337,21 +416,21 @@ end
 --Factorial test
 --assert(Util.fact(0) == 1)
 
+--- ternary like function.
 function Util.iif(cond, cTrue, cFalse, expVal)
- local rCond, rExpVal, rTrue, rFalse
+ local rCond, rExpVal
  if type(cond) == "function" then rCond = cond() else rCond = cond end
  if type(expVal) == "function" then rExpVal = expVal() else rExpVal = expVal end
- if type(cTrue) == "function" then rTrue = cTrue() else rTrue = cTrue end
- if type(cFalse) == "function" then rFalse = cFalse() else rFalse = cFalse end
  
  if (rExpVal and cond == rExpVal) or
     (not rExpVal and cond) then
-   return rTrue
+   return cTrue
  else
-   return rFalse
+   return cFalse
  end
 end
 
+--- define default values if empty
 function Util.defVal(chkVal, defVal, expVal)
   return Util.iif(chkVal==expVal, defVal, chkVal)
 end

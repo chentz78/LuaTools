@@ -348,6 +348,17 @@ mt.__mul = Set.intersection
 -- @see Set.tostring
 mt.__tostring = Set.tostring
 
---mt.__len = Set.card --> Bug in version Lua 5.2.3
+--- add a element to the set.
+-- @within metamethods
+-- @function Set.__call
+-- @see Set.include
+mt.__call = Set.include
+
+--- card of the set.
+-- Only work with Lua 5.3+.
+-- @within metamethods
+-- @function Set.__len
+-- @see Set.card
+mt.__len = Set.card --> Bug in version Lua 5.2.3
 
 return Set

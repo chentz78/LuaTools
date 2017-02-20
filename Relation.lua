@@ -1,3 +1,9 @@
+--- A relation implementation.
+-- @author Cleverton Hentz
+--
+-- Dependencies: `Set`, `Queue`, `dbg`, `Util`
+-- @module Relation
+
 local Relation = {}
 
 local Debug = require("dbg")
@@ -66,9 +72,18 @@ local function internalNext(rel, iterSet)
 end
 
 local mt = {__index=Relation,
+--- iterate over a relation without an order.
+-- @within metamethods
+-- @function Relation.__pairs
+-- @see Relation.getSetIterationSort
             __pairs=function(t)
               return internalNext(t), t, nil
             end,
+            
+--- Include a element in the relation.
+-- @within metamethods
+-- @function Relation.__call
+-- @see Relation.include
             __call=function (f, ...)
               --local args = {...}
               --if #args > 0 then
@@ -77,6 +92,12 @@ local mt = {__index=Relation,
               --  return Relation.tostring(f)
               --end
             end,
+
+--- Could be union or transitive closure, depends on the second operand.
+-- @within metamethods
+-- @function Relation.__add
+-- @see Relation.union
+-- @see Relation.transitiveClosure
             __add=function (op1,op2)
               --print("__add:", op1, op2, type(op2))
               if isARelation(op1) then
@@ -149,6 +170,7 @@ function Relation.intRepresentation(rel)
   return rel.relSet
 end
 
+--- create a new relation.
 function Relation.new(r, isSetBasedTab)
   if not r then return setmetatable(modelInternal(), mt)
   elseif not r.id then -- Normal table
@@ -160,10 +182,12 @@ function Relation.new(r, isSetBasedTab)
   return cloneRel(r)
 end
 
+--- cardinality of the relation.
 function Relation.card(rel)
   return rel.count
 end
 
+--- include an element on the relation.
 function Relation.include(rel, key, val, isSetBasedValue)
   --print("Relation.include", rel, key, val)
   
@@ -181,6 +205,7 @@ local function domRel(rel, filter)
   return Set.new(s)
 end
 
+--- return the domain of the relation
 function Relation.domain(rel)
   return domRel(rel)
 end
@@ -198,10 +223,12 @@ local function rangeRel(rel, filter)
   return s
 end
 
+--- return the range of the relation.
 function Relation.range(rel)
   return rangeRel(rel)
 end
 
+--- compare if two relatio are equals.
 function Relation.equal(r1, r2)
   --print("Relation.equal", r1, r2)
   --Shortcuts
@@ -228,6 +255,7 @@ function Relation.equal(r1, r2)
   return true
 end
 
+--- return only the elements with the key.
 function Relation.subscript(rel, key)
   --print("Relation.subscript", key)
   local s
@@ -252,6 +280,7 @@ function Relation.subscript(rel, key)
   return s 
 end
 
+--- union over the relations.
 function Relation.union(r1, r2)
   if not(isARelation(r1) and isARelation(r2)) then return nil end
   
@@ -274,6 +303,7 @@ function Relation.union(r1, r2)
   return Relation.new(cr, true)
 end
 
+--- composite the relation `r1` with `r2`
 function Relation.composition(r1, r2)
   --print("Relation.composition:", r1, r2)
   if not(isARelation(r1) and isARelation(r2)) then return nil end
@@ -305,6 +335,7 @@ function Relation.composition(r1, r2)
   return Relation.new(cr, true)
 end
 
+--- relation power.
 function Relation.power(rel, idx)
   --print("Relation.power", rel, idx)
   local baseR = Relation.new(rel)
@@ -323,6 +354,7 @@ function Relation.power(rel, idx)
   return baseR, idx
 end
 
+--- transitive closure over the relation.
 function Relation.transitiveClosure(rel, idx)
   --print("Relation.transitiveClosure", rel, idx)
   local baseR = Relation.new(rel)
@@ -354,6 +386,7 @@ function Relation.transitiveClosure(rel, idx)
   return baseR, maxTimes
 end
 
+--- invert the domain and range on the relation
 function Relation.invert(rel)
   if not isARelation(rel) then return nil end
   
@@ -364,6 +397,7 @@ function Relation.invert(rel)
   return r
 end
 
+--- check if the relation is a function.
 function Relation.isFunction(rel)
   if (not rel) or (rel:card() ==0) then return nil end
   
@@ -373,6 +407,7 @@ function Relation.isFunction(rel)
   return true
 end
 
+--- check if the relation has cycles
 function Relation.hasDirectCycles(rel, filter)
   if (not rel) or (rel:card() ==0) then return nil end
   
@@ -393,6 +428,7 @@ function Relation.configToString(to, tc, ts)
   dbg.tableSep = ts
 end
 
+--- convert the relation into a string.
 function Relation.tostring(rel)
   local comp = function (a,b)
     return string.lower(a) < string.lower(b) 
@@ -438,6 +474,7 @@ function Relation.filterOverRelation(rel, iter, filter, isSetBased)
   return ret
 end
 
+--- get the first element
 function Relation.first(rel, key)
   if key then
     local r = (rel%key)
@@ -474,11 +511,20 @@ function Relation.min(rel, key)
   return m, (rel%m):min()
 end
 
---[[
-From http://en.wikipedia.org/wiki/Breadth-first_search
-]]
-function Relation.BFS(rel, a, funItem, retRevPath)
-  if not (rel and a and funItem) then error("Relation.BFS: Invalid params!") end
+--- Breadth first search over the relation.
+-- Do a breadth first search from `root` over the relation.
+-- [Source](http://en.wikipedia.org/wiki/Breadth-first_search)
+-- @param rel Relation
+-- @param root The root node to the search.
+-- @param funItem Function executed over the elements. It has the signature `funItem(elem, topIndex)`.
+-- @param retRevPath Save the sequence nodes.
+-- @return return the path if `retRevPath` is true.
+-- @usage rel:BFS("nRoot", function(elem, topIndex)
+--   print(elem, topIndex)
+--   return true
+-- end)
+function Relation.BFS(rel, root, funItem, retRevPath)
+  if not (rel and root and funItem) then error("Relation.BFS: Invalid params!") end
   retRevPath = retRevPath or false
   local vertexs = rel:domain()+rel:range()
   local q = Queue.new()
@@ -495,11 +541,11 @@ function Relation.BFS(rel, a, funItem, retRevPath)
   
   --Initialization
   for v in pairs(vertexs) do
-    if v == a then vDist[v] = 0 
+    if v == root then vDist[v] = 0 
     else vDist[v] = inf end
   end
   --print("Relation.BFS: point 1",q:empty())
-  q:enqueue(a)
+  q:enqueue(root)
   --print("Relation.BFS: point 2", q:empty())
   
   local t,u,aE
@@ -597,11 +643,36 @@ function Relation.card2(rel)
 end
 ]]
 
+--- equality of relations.
+-- @within metamethods
+-- @function Relation.__eq
+-- @see Relation.equal
 mt.__eq  = Relation.equal
+
+--- convert a relation to string.
+-- @within metamethods
+-- @function Relation.__tostring
+-- @see Relation.tostring
 mt.__tostring = Relation.tostring
+
+--- Relation composition.
+-- @within metamethods
+-- @function Relation.__concat
+-- @see Relation.composition
 mt.__concat = Relation.composition
+
+--- Relation power.
+-- @within metamethods
+-- @function Relation.__pow
+-- @see Relation.power
 mt.__pow = Relation.power
+
+--- Relation subscript.
+-- @within metamethods
+-- @function Relation.__mod
+-- @see Relation.subscript
 mt.__mod = Relation.subscript
+
 --[[
 __add = Relation.union, if a and b are Relations
 __add = Relation.transitiveClosure, if a is Relation and b is number
