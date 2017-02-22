@@ -365,6 +365,23 @@ function Util.readContent(fname, func)
   return i
 end
 
+--- read text file content.
+function Util.writeContent(fname, func)
+  local file = io.open(fname, "w")
+  local cnt = nil
+  local fI = Util.incGen(0)
+  local i
+  while true do
+    i = fI()
+    cnt = func(i+1)
+    if not cnt then break end
+    file:write(cnt)
+  end
+  file:flush()
+  file:close()
+  return i
+end
+
 --- split string using the separator.
 -- @return Indexed table
 function Util.splitString(str, sep)
