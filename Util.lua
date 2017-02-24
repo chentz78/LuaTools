@@ -187,8 +187,60 @@ function Util.defTableValue(tab, tabDef)
   return ret
 end
 
+--- provide a pseudo-random interator
+function Util.randomIterator(tab)
+  local tKeySorted = Util.getOrderIndex(tab)
+  local min,max = 1,#tKeySorted
+  local fr = Util.randomExc(min,max)
+  
+  --print(min, max)
+  local f = function(r, key)
+    local sk = fr()
+    local k = tKeySorted[sk]
+    local v = tab[k]
+    --print(sk, k, v)
+    return k,v
+  end
+  return f, tab, nil
+end
+
 -- [[== End of table related functions ==]]
 
+--- pseudo-random function without repetitions.
+-- Just for a small range.
+function Util.randomExc(m,n)
+  if type(m) ~= type(n) or
+     type(m) ~= "number" then error("Invalid argument!") end
+     
+  local usedVal = {}
+  local usedCount = Util.incGen(0)
+  local ended = false
+  local spaceSize = (n-m)
+  return function()
+    if ended then return nil end
+    
+    local rn
+    while true do
+      rn = usedCount(true)
+      --print(rn, Util.tostring(usedVal))
+      if rn > spaceSize then
+        ended = true
+        return nil
+      end
+      
+      --math.randomseed(Util.round(os.clock()*1000000))
+      math.randomseed(os.clock()*1000000)
+      rn = math.random(m,n)
+      --print("Random:", rn)
+      if not usedVal[rn] then
+        usedVal[rn] = true
+        --print("count")
+        usedCount()
+        return rn
+      end
+    end
+  end
+end
 
 function Util.copy(object,maxIdx)
   if type(object) ~= "table" then
