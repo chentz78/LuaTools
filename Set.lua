@@ -75,10 +75,6 @@ local function isASet(obj)
   return (type(obj) == 'table' and obj.id and obj.id == 'Set')
 end
 
-local function clone(s)
-  return Util.copy(s)
-end
-
 local function internalAdd(set, elem)
   if not set.id or (set.id and set.id ~= 'Set') then return false end
   
@@ -115,7 +111,7 @@ function Set.new(l)
       internalAddTab(set, l)
     elseif type(l) == 'table' and l.id == 'Set' then
       --print("Set.new:", "clone")
-      set = clone(l)
+      set = l:clone()
     elseif l then
       --print("Set.new:", "item")
       internalAdd(set, l)
@@ -316,6 +312,10 @@ end
 --- Check if an object is a set
 function Set.isASet(obj)
   return isASet(obj)
+end
+
+function Set.clone(obj)
+  return Util.copy(obj)
 end
 
 --- union of sets.
