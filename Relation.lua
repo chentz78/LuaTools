@@ -616,6 +616,7 @@ function Relation.shortestPath(rel, a, b)
   end
 end
 
+--- return an aleatory path from `a`. 
 function Relation.getAleatoryPath(rel, a)
   --print("Relation.getAleatoryPath",rel,a)
   local curr = a
@@ -629,8 +630,14 @@ function Relation.getAleatoryPath(rel, a)
   return ret
 end
 
+--- check if the `obj` is a relation.
 function Relation.isARelation(obj)
   return isARelation(obj)
+end
+
+--- clone the relation `obj`.
+function Relation.clone(obj)
+  return cloneRel(obj)
 end
 
 --[[

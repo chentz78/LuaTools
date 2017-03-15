@@ -204,6 +204,14 @@ function Util.randomIterator(tab)
   return f, tab, nil
 end
 
+function Util.loadTable(strTab)
+  if not strTab or strTab == "" then return nil end
+  
+  local retTab = load("return " .. strTab)()
+  if type(retTab) == "table" then return retTab end
+  return nil
+end
+
 -- [[== End of table related functions ==]]
 
 --- pseudo-random function without repetitions.
