@@ -448,18 +448,22 @@ function Relation.tostring(rel)
   end
 end
 
+--- get a set-based iterator
 function Relation.getSetIteration(rel)
   return internalNext(rel, true), rel, nil
 end
 
+--- get a set-based sorted iterator
 function Relation.getSetIterationSort(rel)
   return intNextSetKeySort(rel), rel, nil
 end
 
+--- get an element-based iterator
 function Relation.getElemIteration(rel)
   return internalNext(rel, false), rel, nil
 end
 
+--- filter over the relation
 function Relation.filterOverRelation(rel, iter, filter, isSetBased)
   --print("Relation.filterOverRelation", rel, iter, filter, isSetBased)
   if not (filter or iter) then return nil end
@@ -630,14 +634,19 @@ function Relation.getAleatoryPath(rel, a)
   return ret
 end
 
+--- clone the relation `obj`.
+function Relation.clone(obj)
+  return cloneRel(obj)
+end
+
 --- check if the `obj` is a relation.
 function Relation.isARelation(obj)
   return isARelation(obj)
 end
 
---- clone the relation `obj`.
-function Relation.clone(obj)
-  return cloneRel(obj)
+--- check if it is empty
+function Relation.isEmpty(obj)
+  return obj:card() == 0
 end
 
 --[[
