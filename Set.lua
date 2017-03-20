@@ -309,11 +309,17 @@ function Set.getSortIterator(set)
   return intNextSort(set), set, nil
 end
 
---- Check if an object is a set
+--- check if an object is a set
 function Set.isASet(obj)
   return isASet(obj)
 end
 
+--- check if it is an empty set
+function Set.isEmpty(obj)
+  return obj:card() == 0
+end
+
+--- clone the set
 function Set.clone(obj)
   return Util.copy(obj)
 end
