@@ -585,6 +585,7 @@ end
 This function should be moved to other module because it's graph related.
 From http://www.eecs.wsu.edu/~ananth/CptS223/Lectures/shortestpath.pdf
 ]]
+--- calculate the shortest path from `a` to `b`
 function Relation.shortestPath(rel, a, b)
   local vertexs = rel:domain() + rel:range()
   --print("Relation.shortestPath", a,b, vertexs)
