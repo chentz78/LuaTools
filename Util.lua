@@ -411,6 +411,8 @@ end
 --- read text file content.
 function Util.readContent(fname, func)
   local file = io.open(fname, "r")
+  if not file then error("Util.readContent: Invalid file name!") end
+  
   local cnt = nil
   local fI = Util.incGen(0)
   local i
